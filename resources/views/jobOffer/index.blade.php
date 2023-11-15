@@ -9,7 +9,8 @@
                 <a href="{{ route('jobOffer.show', $jobOffer) }}"><button class="btn btn-primary">Show</button></a>
                 <a href="{{ route('jobOffer.edit', $jobOffer) }}"><button class="btn btn-warning">Edit</button></a>
                 <form action="{{ route('jobOffer.destroy', $jobOffer) }}" style="display: inline" method="POST">
-                    @method('POST')
+                    @csrf
+                    @method('DELETE')
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
             </div>
