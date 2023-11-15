@@ -1,12 +1,20 @@
 @extends('layout.default')
 
 @section('content')
-    <form action="{{route('jobOffer.store')}}" method="POST">
-        @csrf
-        <span>Name</span>
-        <input type="text" name="name"> 
-        <span>Description</span>
-        <textarea name="description"></textarea>
-        <button type="submit">Create offer</button>
-    </form>
+    <div class="card mt-3">
+        <div class="card-body">
+            <form action="{{ route('jobOffer.store') }}" method="POST">
+                @csrf
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" name="name">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" rows="3" name="description"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+        </div>
+    </div>
 @endsection
