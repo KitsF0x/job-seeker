@@ -10,6 +10,7 @@
     @vite(['node_modelules/bootstrap/js/index.esm.js', 'node_modules/bootstrap/scss/bootstrap.scss'])
 </head>
 <body>
+    @include('layout.navbar')
     <div class="container">
         @yield('content')
     </div>
