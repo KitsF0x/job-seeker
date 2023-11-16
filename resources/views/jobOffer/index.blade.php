@@ -4,15 +4,10 @@
     @foreach ($jobOffers as $jobOffer)
         <div class="card mt-3">
             <div class="card-body">
-                <p>{{ $jobOffer->name }}</p>
+                <a href="{{ route('jobOffer.show', $jobOffer) }}">
+                    <h3>{{ $jobOffer->name }}</h3>
+                </a>
                 <p>{{ $jobOffer->description }}</p>
-                <a href="{{ route('jobOffer.show', $jobOffer) }}"><button class="btn btn-primary">Show</button></a>
-                <a href="{{ route('jobOffer.edit', $jobOffer) }}"><button class="btn btn-warning">Edit</button></a>
-                <form action="{{ route('jobOffer.destroy', $jobOffer) }}" style="display: inline" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
             </div>
         </div>
     @endforeach
