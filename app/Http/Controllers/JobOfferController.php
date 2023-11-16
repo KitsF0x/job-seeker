@@ -31,12 +31,18 @@ class JobOfferController extends Controller
 
     public function show(JobOffer $jobOffer)
     {
-        return view('jobOffer.show', ['jobOffer'=> $jobOffer]);
+        return view('jobOffer.show', [
+            'jobOffer'=> $jobOffer,
+            'requirements' => $jobOffer->requirements
+        ]);
     }
 
     public function edit(JobOffer $jobOffer)
     {
-        return view('jobOffer.edit', ['jobOffer'=> $jobOffer]);
+        return view('jobOffer.edit', [
+            'jobOffer'=> $jobOffer,
+            'requirements' => $jobOffer->requirements
+        ]);
     }
 
     public function update(Request $request, JobOffer $jobOffer)
@@ -49,6 +55,10 @@ class JobOfferController extends Controller
 
     public function destroy(JobOffer $jobOffer)
     {
+        // Delete all requirements assigned to offer
+        foreach($jobOffer->requirements as $requirement) {
+            $requirement->delete();
+        }
         $jobOffer->delete();
         return redirect(route('jobOffer.index'));
     }
