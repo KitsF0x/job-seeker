@@ -18,11 +18,13 @@
                         </div>
                     </div>
                     <h3>
-                        <span class="badge bg-secondary">
-                            {{ $jobOffer->jobOfferDetails->lowest_salary }} -
-                            {{ $jobOffer->jobOfferDetails->highest_salary }}
-                            {{ $jobOffer->jobOfferDetails->salary_type }}
-                        </span>
+                        @if ($jobOffer->jobOfferDetails != null)
+                            <span class="badge bg-secondary">
+                                {{ $jobOffer->jobOfferDetails->lowest_salary }} -
+                                {{ $jobOffer->jobOfferDetails->highest_salary }}
+                                {{ $jobOffer->jobOfferDetails->salary_type }}
+                            </span>
+                        @endif
                     </h3>
                 </div>
 
