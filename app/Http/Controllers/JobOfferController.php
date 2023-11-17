@@ -33,7 +33,8 @@ class JobOfferController extends Controller
     {
         return view('jobOffer.show', [
             'jobOffer'=> $jobOffer,
-            'requirements' => $jobOffer->requirements
+            'requirements' => $jobOffer->requirements,
+            'details' => $jobOffer->jobOfferDetails
         ]);
     }
 
@@ -41,7 +42,8 @@ class JobOfferController extends Controller
     {
         return view('jobOffer.edit', [
             'jobOffer'=> $jobOffer,
-            'requirements' => $jobOffer->requirements
+            'requirements' => $jobOffer->requirements,
+            'details' => $jobOffer->jobOfferDetails
         ]);
     }
 

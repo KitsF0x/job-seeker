@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobOfferController;
+use App\Http\Controllers\JobOfferDetailsController;
 use App\Http\Controllers\RequirementController;
 
 /*
@@ -24,3 +25,4 @@ Route::post('/requirement/{jobOffer}', [RequirementController::class, 'store'])-
 Route::delete('/requirement/{requirement}', [RequirementController::class, 'destroy'])->name('requirement.destroy');
 Route::put('/requirement/{requirement}', [RequirementController::class, 'update'])->name('requirement.update');
 
+Route::put('/jobOfferDetails/{jobOffer}', [JobOfferDetailsController::class, 'update'])->name('jobOfferDetails.update');
