@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobOfferController;
@@ -26,3 +27,9 @@ Route::delete('/requirement/{requirement}', [RequirementController::class, 'dest
 Route::put('/requirement/{requirement}', [RequirementController::class, 'update'])->name('requirement.update');
 
 Route::put('/jobOfferDetails/{jobOffer}', [JobOfferDetailsController::class, 'update'])->name('jobOfferDetails.update');
+
+Route::get('/auth/login', [AuthController::class, 'loginForm'])->name('auth.loginForm');
+Route::get('/auth/register', [AuthController::class, 'registerForm'])->name('auth.registerForm');
+Route::post('/auth/register', [AuthController::class, 'register'])->name('auth.register');
+Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
+Route::delete('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
