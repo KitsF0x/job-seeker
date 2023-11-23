@@ -28,7 +28,7 @@
                         <form action="{{ route('auth.logout') }}" method="POST" name="logoutForm">
                             @method('DELETE')
                             @csrf
-                            <button type="submit" class="nav-link active" href="{{ route('auth.logout') }}">:ogout</button>
+                            <button type="submit" class="nav-link active" href="{{ route('auth.logout') }}">Logout</button>
                         </form>
                     </div>
                 @endauth
