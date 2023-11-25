@@ -75,10 +75,10 @@ class PersonDetailsTest extends TestCase
         ]);
 
         // Act
-        $response = $this->get(route('auth.show'));
+        $response = $this->get(route('auth.edit'));
 
         // Assert
-        $response->assertViewIs('auth.show');
+        $response->assertViewIs('auth.edit');
         $response->assertSee($details->name);
         $response->assertSee($details->surname);
         $response->assertSee($details->day_of_birth);

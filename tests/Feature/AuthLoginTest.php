@@ -67,10 +67,10 @@ class AuthLoginTest extends TestCase
         Auth::login($user);
 
         // Act
-        $response = $this->get(route('auth.show'));
+        $response = $this->get(route('auth.edit'));
 
         // Assert
-        $response->assertViewIs('auth.show');
+        $response->assertViewIs('auth.edit');
     }
 
     public function test_cannot_display_my_profile_route_when_user_is_not_logged_in()
@@ -79,7 +79,7 @@ class AuthLoginTest extends TestCase
         Auth::logout();
 
         // Act
-        $response = $this->get(route('auth.show'));
+        $response = $this->get(route('auth.edit'));
 
         // Assert
         $response->assertRedirect(route('auth.loginForm'));

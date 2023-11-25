@@ -34,6 +34,6 @@ Route::get('/auth/register', [AuthController::class, 'registerForm'])->name('aut
 Route::post('/auth/register', [AuthController::class, 'register'])->name('auth.register');
 Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
 Route::delete('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
-Route::get('/auth/myProfile', [AuthController::class, 'show'])->name('auth.show')->middleware('auth');
+Route::get('/auth/myProfile', [AuthController::class, 'edit'])->name('auth.edit')->middleware('auth');
 
 Route::put('/personDetails/edit', [PersonDetailsController::class, 'update'])->name('personDetails.update');

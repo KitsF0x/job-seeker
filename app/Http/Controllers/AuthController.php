@@ -75,8 +75,8 @@ class AuthController extends Controller
         return back();
     }
 
-    public function show() {
-        return view('auth.show', [ 
+    public function edit() {
+        return view('auth.edit', [ 
             'personDetails' => Auth::user()->personDetails
         ]);
     }
