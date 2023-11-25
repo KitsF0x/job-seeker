@@ -22,7 +22,7 @@
                 @endguest
                 @auth
                     <div class="navbar-nav">
-                        <a class="nav-link active" href="#">{{ Auth::user()->name }} </a>
+                        <a class="nav-link active" href="{{ route('auth.show') }}">{{ Auth::user()->name }} </a>
                     </div>
                     <div class="navbar-nav">
                         <form action="{{ route('auth.logout') }}" method="POST" name="logoutForm">

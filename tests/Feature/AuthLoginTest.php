@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\ModelFactories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class AuthLoginTest extends TestCase
@@ -57,6 +58,30 @@ class AuthLoginTest extends TestCase
 
         // Assert
         $this->assertGuest();
+    }
 
+    public function test_can_display_my_profile_route_when_user_is_logged_in()
+    {
+        // Arrange
+        $user = UserFactory::createWithDefaultValues();
+        Auth::login($user);
+
+        // Act
+        $response = $this->get(route('auth.show'));
+
+        // Assert
+        $response->assertViewIs('auth.show');
+    }
+
+    public function test_cannot_display_my_profile_route_when_user_is_not_logged_in()
+    {
+        // Arrange
+        Auth::logout();
+
+        // Act
+        $response = $this->get(route('auth.show'));
+
+        // Assert
+        $response->assertRedirect(route('auth.loginForm'));
     }
 }

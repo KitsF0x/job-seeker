@@ -74,4 +74,10 @@ class AuthController extends Controller
         Auth::logout();
         return back();
     }
+
+    public function show() {
+        return view('auth.show', [ 
+            'personDetails' => Auth::user()->personDetails
+        ]);
+    }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobOfferController;
 use App\Http\Controllers\JobOfferDetailsController;
+use App\Http\Controllers\PersonDetailsController;
 use App\Http\Controllers\RequirementController;
 
 /*
@@ -33,3 +34,6 @@ Route::get('/auth/register', [AuthController::class, 'registerForm'])->name('aut
 Route::post('/auth/register', [AuthController::class, 'register'])->name('auth.register');
 Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
 Route::delete('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
+Route::get('/auth/myProfile', [AuthController::class, 'show'])->name('auth.show')->middleware('auth');
+
+Route::put('/personDetails/edit', [PersonDetailsController::class, 'update'])->name('personDetails.update');
