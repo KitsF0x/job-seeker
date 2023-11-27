@@ -4,10 +4,12 @@ namespace Tests\Feature;
 
 use App\ModelFactories\JobOfferDetailsFactory;
 use App\ModelFactories\JobOfferFactory;
+use App\ModelFactories\UserFactory;
 use App\Models\JobOffer;
 use App\Models\JobOfferDetails;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class JobOfferDetailsManagementTest extends TestCase
@@ -16,7 +18,7 @@ class JobOfferDetailsManagementTest extends TestCase
     public function test_when_called_update_and_details_are_not_assigned_to_offer_new_details_should_be_created()
     {
         // Arrange
-        $jobOffer = JobOfferFactory::createWithDefaultValues();
+        $jobOffer = JobOfferFactory::createWithDefaultValues(1);
 
         // Act
         $response = $this->put(route('jobOfferDetails.update', $jobOffer->id), [
@@ -31,7 +33,7 @@ class JobOfferDetailsManagementTest extends TestCase
     public function test_when_called_update_on_already_assigned_details_to_offer_details_should_be_updated()
     {
         // Arrange
-        $jobOffer = JobOfferFactory::createWithDefaultValues();
+        $jobOffer = JobOfferFactory::createWithDefaultValues(1);
         $details = JobOfferDetailsFactory::createWithDefaultValues($jobOffer->id);
         $details->lowest_salary = 2000;
         $details->save();
@@ -50,7 +52,7 @@ class JobOfferDetailsManagementTest extends TestCase
     public function test_can_display_days_to_offer_end_and_salary_info_in_job_offer_index_view()
     {
         // Arrange
-        $jobOffer = JobOfferFactory::createWithDefaultValues();
+        $jobOffer = JobOfferFactory::createWithDefaultValues(1);
         JobOfferDetailsFactory::create('19-01-2023', '29-01-2023', '1234', '5678', 'PLN', $jobOffer->id);
 
         // Act
@@ -66,7 +68,7 @@ class JobOfferDetailsManagementTest extends TestCase
     public function test_can_display_days_to_offer_end_and_salary_info_in_job_offer_show_view()
     {
         // Arrange
-        $jobOffer = JobOfferFactory::createWithDefaultValues();
+        $jobOffer = JobOfferFactory::createWithDefaultValues(1);
         $details = JobOfferDetailsFactory::createWithDefaultValues($jobOffer->id);
 
         // Act
@@ -83,7 +85,10 @@ class JobOfferDetailsManagementTest extends TestCase
     public function test_can_display_days_to_offer_end_and_salary_info_in_job_offer_edit_view()
     {
         // Arrange
-        $jobOffer = JobOfferFactory::createWithDefaultValues();
+        $user = UserFactory::createWithDefaultValues();
+        Auth::login($user);
+
+        $jobOffer = JobOfferFactory::createWithDefaultValues($user->id);
         $details = JobOfferDetailsFactory::createWithDefaultValues($jobOffer->id);
 
         // Act

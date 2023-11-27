@@ -3,9 +3,11 @@
 namespace Tests\Feature;
 
 use App\ModelFactories\JobOfferFactory;
+use App\ModelFactories\UserFactory;
 use App\Models\Requirement;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class RequirementManagementTest extends TestCase
@@ -14,7 +16,7 @@ class RequirementManagementTest extends TestCase
     public function test_can_assign_requirement_to_job_offer()
     {
         //Arrange
-        $jobOffer = JobOfferFactory::createWithDefaultValues();
+        $jobOffer = JobOfferFactory::createWithDefaultValues(0);
 
         //Act
         $response = $this->post(route('requirement.store', $jobOffer), [
@@ -31,7 +33,7 @@ class RequirementManagementTest extends TestCase
     public function test_can_delete_requirement()
     {
         //Arrange
-        $jobOffer = JobOfferFactory::createWithDefaultValues();
+        $jobOffer = JobOfferFactory::createWithDefaultValues(0);
         $requirement = Requirement::create([
             'description' => 'My description', 
             'jobOffer_id' => $jobOffer
@@ -48,7 +50,9 @@ class RequirementManagementTest extends TestCase
     public function test_can_delete_all_requirements_assigned_to_job_offer_on_its_delete()
     {
         //Arrange
-        $jobOffer = JobOfferFactory::createWithDefaultValues();
+        $user = UserFactory::createWithDefaultValues();
+        Auth::login($user);
+        $jobOffer = JobOfferFactory::createWithDefaultValues($user->id);
         Requirement::create([
             'description' => 'My description', 
             'jobOffer_id' => $jobOffer->id

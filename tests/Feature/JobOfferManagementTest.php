@@ -7,14 +7,16 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\JobOffer;
 use App\ModelFactories\JobOfferFactory;
+use App\ModelFactories\UserFactory;
+use Illuminate\Support\Facades\Auth;
 
 class JobOfferManagementTest extends TestCase
 {
     use RefreshDatabase;
-    public function testIndex()
+    public function test_can_show_list_of_offers()
     {
         // Arrange
-        JobOfferFactory::createWithDefaultValues();
+        JobOfferFactory::createWithDefaultValues(1);
 
         // Act
         $response = $this->get(route('jobOffer.index'));
@@ -26,8 +28,12 @@ class JobOfferManagementTest extends TestCase
         $response->assertSee(JobOfferFactory::DEFAULT_DESCRIPTION);
     }
 
-    public function testCreate()
+    public function test_can_display_offer_create_form()
     {
+        // Arrange
+        $user = UserFactory::createWithDefaultValues();
+        Auth::login($user);
+
         // Act
         $response = $this->get(route('jobOffer.create'));
 
@@ -36,8 +42,12 @@ class JobOfferManagementTest extends TestCase
         $response->assertViewIs('jobOffer.create');
     }
 
-    public function testStore()
+    public function test_can_store_new_offer()
     {
+        //Arrange
+        $user = UserFactory::createWithDefaultValues();
+        Auth::login($user);
+
         // Act
         $response = $this->post(route('jobOffer.store'), [
             'name' => 'Junior PHP Developer',
@@ -49,10 +59,10 @@ class JobOfferManagementTest extends TestCase
         $this->assertCount(1, JobOffer::all());
     }
 
-    public function testShow()
+    public function test_can_show_offer_details()
     {
         // Arrange
-        $jobOffer = JobOfferFactory::createWithDefaultValues();
+        $jobOffer = JobOfferFactory::createWithDefaultValues(1);
 
         // Act
         $response = $this->get(route('jobOffer.show', $jobOffer));
@@ -64,10 +74,13 @@ class JobOfferManagementTest extends TestCase
         $response->assertSee(JobOfferFactory::DEFAULT_DESCRIPTION);
     }
 
-    public function testEdit()
+    public function test_can_show_offer_edit_form()
     {
         // Arrange
-        $jobOffer = JobOfferFactory::createWithDefaultValues();
+        $user = UserFactory::createWithDefaultValues();
+        Auth::login($user);
+
+        $jobOffer = JobOfferFactory::createWithDefaultValues($user->id);
 
         // Act
         $response = $this->get(route('jobOffer.edit', $jobOffer));
@@ -79,10 +92,12 @@ class JobOfferManagementTest extends TestCase
         $response->assertSee(JobOfferFactory::DEFAULT_DESCRIPTION);
     }
 
-    public function testUpdate()
+    public function test_can_update_offer()
     {
         // Arrange
-        $jobOffer = JobOfferFactory::createWithDefaultValues();
+        $user = UserFactory::createWithDefaultValues();
+        Auth::login($user);
+        $jobOffer = JobOfferFactory::createWithDefaultValues($user->id);
 
         $newName = 'Junior Java Developer';
         $newDescription = 'We are looking for junior Java Developers';
@@ -98,10 +113,12 @@ class JobOfferManagementTest extends TestCase
         $this->assertEquals($newDescription, JobOffer::first()->description);
     }
 
-    public function testDestroy()
+    public function test_can_destroy_offer()
     {
         // Arrange
-        $jobOffer = JobOfferFactory::createWithDefaultValues();
+        $user = UserFactory::createWithDefaultValues();
+        Auth::login($user);
+        $jobOffer = JobOfferFactory::createWithDefaultValues($user->id);
 
         // Act
         $response = $this->delete(route('jobOffer.destroy', $jobOffer));

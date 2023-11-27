@@ -8,12 +8,25 @@
                     <span>
                         {{ $jobOffer->name }}
                     </span>
-                    @if ($jobOffer->jobOfferDetails != null)
-                        <span class="badge bg-secondary">
-                            {{ $details->lowest_salary }} - {{ $details->highest_salary }} {{ $details->salary_type }}
-                        </span>
-                    @endif
+
                 </h3>
+                {{-- If current user owns this offer --}}
+                @auth
+                    @if (Auth::user()->id == $jobOffer->user_id)
+                        <a href="{{ route('jobOffer.edit', $jobOffer) }}"><button class="btn btn-warning">Edit</button></a>
+                        <form action="{{ route('jobOffer.destroy', $jobOffer) }}" style="display: inline" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    @endif
+                @endauth
+
+                @if ($jobOffer->jobOfferDetails != null)
+                    <span class="badge bg-secondary">
+                        {{ $details->lowest_salary }} - {{ $details->highest_salary }} {{ $details->salary_type }}
+                    </span>
+                @endif
             </div>
             <hr>
             <h4>Description</h4>
@@ -34,12 +47,6 @@
                 @foreach ($requirements as $requirement)
                     <li>{{ $requirement->description }}</li>
                 @endforeach
-                <a href="{{ route('jobOffer.edit', $jobOffer) }}"><button class="btn btn-warning">Edit</button></a>
-                <form action="{{ route('jobOffer.destroy', $jobOffer) }}" style="display: inline" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
             </ul>
         </div>
     </div>

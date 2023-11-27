@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\JobOffer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class JobOfferController extends Controller
 {
@@ -19,13 +20,23 @@ class JobOfferController extends Controller
 
     public function create()
     {
+        if(Auth::guest()) {
+            return redirect(route('auth.loginForm'));
+        }
         return view('jobOffer.create');
     }
 
     public function store(Request $request)
     {
+        if(Auth::guest()) {
+            return redirect(route('auth.loginForm'));
+        }
         $validated = $this->validate($request, $this->validations);
-        $jobOffer = JobOffer::create($validated);
+        $jobOffer = JobOffer::create([
+            'name'=> $validated['name'],
+            'description'=> $validated['description'],
+            'user_id'=> Auth::id()
+        ]);
         return redirect(route('jobOffer.show', $jobOffer));
     }
 
@@ -40,6 +51,13 @@ class JobOfferController extends Controller
 
     public function edit(JobOffer $jobOffer)
     {
+        if(Auth::guest()) {
+            return redirect(route('auth.loginForm'));
+        }
+        if(Auth::id() != $jobOffer->user_id) {
+            return abort(401);
+        }
+
         return view('jobOffer.edit', [
             'jobOffer'=> $jobOffer,
             'requirements' => $jobOffer->requirements,
@@ -49,6 +67,12 @@ class JobOfferController extends Controller
 
     public function update(Request $request, JobOffer $jobOffer)
     {
+        if(Auth::guest()) {
+            return redirect(route('auth.loginForm'));
+        }
+        if(Auth::id() != $jobOffer->user_id) {
+            return abort(401);
+        }
         $validated = $this->validate($request, $this->validations);
         $jobOffer->update($validated);
         return redirect(route('jobOffer.show', $jobOffer));
@@ -57,6 +81,12 @@ class JobOfferController extends Controller
 
     public function destroy(JobOffer $jobOffer)
     {
+        if(Auth::guest()) {
+            return redirect(route('auth.loginForm'));
+        }
+        if(Auth::id() != $jobOffer->user_id) {
+            return abort(401);
+        }
         // Delete all requirements assigned to offer
         foreach($jobOffer->requirements as $requirement) {
             $requirement->delete();
