@@ -90,7 +90,7 @@ class JobOfferAuthTest extends TestCase
         // Act
         $response = $this->get(route('jobOffer.edit', $jobOffer->id));
 
-        // Arrange
+        // Assert
         $response->assertViewIs('jobOffer.edit');
         $response->assertSee($jobOffer->name);
         $response->assertSee($jobOffer->description);
@@ -112,7 +112,7 @@ class JobOfferAuthTest extends TestCase
         // Act
         $response = $this->get(route('jobOffer.edit', $jobOffer->id));
 
-        // Arrange
+        // Assert
         $response->assertUnauthorized();
     }
 
@@ -131,7 +131,7 @@ class JobOfferAuthTest extends TestCase
         // Act
         $response = $this->get(route('jobOffer.edit', $jobOffer->id));
 
-        // Arrange
+        // Assert
         $response->assertRedirect(route('auth.loginForm'));
     }
 
@@ -155,7 +155,7 @@ class JobOfferAuthTest extends TestCase
             'description' => 'NewDescription'
         ]);
 
-        // Arrange
+        // Assert
         $this->assertEquals('NewName', JobOffer::first()->name);
         $this->assertEquals('NewDescription', JobOffer::first()->description);
     }
@@ -179,7 +179,7 @@ class JobOfferAuthTest extends TestCase
             'description' => 'NewDescription'
         ]);
 
-        // Arrange
+        // Assert
         $response->assertUnauthorized();
     }
 
@@ -201,7 +201,7 @@ class JobOfferAuthTest extends TestCase
             'description' => 'NewDescription'
         ]);
 
-        // Arrange
+        // Assert
         $response->assertRedirect(route('auth.loginForm'));
     }
 
@@ -222,7 +222,7 @@ class JobOfferAuthTest extends TestCase
         // Act
         $response = $this->delete(route('jobOffer.destroy', $jobOffer->id));
 
-        // Arrange
+        // Assert
         $this->assertCount(0, JobOffer::all());
     }
 
@@ -240,7 +240,7 @@ class JobOfferAuthTest extends TestCase
         // Act
         $response = $this->delete(route('jobOffer.destroy', $jobOffer->id));
 
-        // Arrange
+        // Assert
         $response->assertUnauthorized();
     }
     public function test_guest_cannot_cannot_update_job_offer() 
@@ -258,7 +258,7 @@ class JobOfferAuthTest extends TestCase
         // Act
         $response = $this->delete(route('jobOffer.destroy', $jobOffer->id));
 
-        // Arrange
+        // Assert
         $response->assertRedirect(route('auth.loginForm'));
     }
 }

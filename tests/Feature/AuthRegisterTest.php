@@ -10,6 +10,12 @@ use Tests\TestCase;
 
 class AuthRegisterTest extends TestCase
 {
+    const FORM_DATA = [
+        'name' => 'John',
+        'email' => 'john.doe@example.com',
+        'password' => 'pass12345',
+        'password-repeat' => 'pass12345',
+    ];
     use RefreshDatabase;
     public function test_can_display_register_form_page()
     {
@@ -23,16 +29,8 @@ class AuthRegisterTest extends TestCase
 
     public function test_can_create_user_when_inputs_from_register_form_are_valid()
     {
-        // Arrange
-        $formData = [
-            'name' => 'John',
-            'email' => 'john.doe@example.com',
-            'password' => 'pass12345',
-            'password-repeat' => 'pass12345',
-        ];
-
         // Act
-        $this->post(route('auth.register'), $formData);
+        $this->post(route('auth.register'), self::FORM_DATA);
 
         // Assert
         $this->assertCount(1, User::all());
@@ -40,16 +38,8 @@ class AuthRegisterTest extends TestCase
 
     public function test_should_redirect_to_home_after_user_registration()
     {
-        // Arrange
-        $formData = [
-            'name' => 'John',
-            'email' => 'john.doe@example.com',
-            'password' => 'pass12345',
-            'password-repeat' => 'pass12345',
-        ];
-
         // Act
-        $response = $this->post(route('auth.register'), $formData);
+        $response = $this->post(route('auth.register'), self::FORM_DATA);
 
         // Assert
         $response->assertRedirect(route('home'));
@@ -57,16 +47,8 @@ class AuthRegisterTest extends TestCase
 
     public function test_should_login_new_user_after_successful_registration()
     {
-        // Arrange
-        $formData = [
-            'name' => 'John',
-            'email' => 'john.doe@example.com',
-            'password' => 'pass12345',
-            'password-repeat' => 'pass12345',
-        ];
-
         // Act
-        $response = $this->post(route('auth.register'), $formData);
+        $response = $this->post(route('auth.register'), self::FORM_DATA);
 
         // Assert
         $this->assertAuthenticated();
@@ -75,12 +57,8 @@ class AuthRegisterTest extends TestCase
     public function test_cannot_create_new_user_when_name_is_empty()
     {
         // Arrange
-        $formData = [
-            'name' => '',
-            'email' => 'john.doe@example.com',
-            'password' => 'pass12345',
-            'password-repeat' => 'pass12345',
-        ];
+        $formData = self::FORM_DATA;
+        $formData['name'] = '';
 
         // Act
         $response = $this->post(route('auth.register'), $formData);
@@ -92,12 +70,8 @@ class AuthRegisterTest extends TestCase
     public function test_cannot_create_new_user_when_email_is_empty()
     {
         // Arrange
-        $formData = [
-            'name' => 'John',
-            'email' => '',
-            'password' => '1234',
-            'password-repeat' => '1234',
-        ];
+        $formData = self::FORM_DATA;
+        $formData['email'] = '';
 
         // Act
         $response = $this->post(route('auth.register'), $formData);
@@ -109,12 +83,8 @@ class AuthRegisterTest extends TestCase
     public function test_cannot_create_new_user_when_email_is_not_valid_empty()
     {
         // Arrange
-        $formData = [
-            'name' => 'John',
-            'email' => 'asdf',
-            'password' => '1234',
-            'password-repeat' => '1234',
-        ];
+        $formData = self::FORM_DATA;
+        $formData['email'] = 'asdf';
 
         // Act
         $response = $this->post(route('auth.register'), $formData);
@@ -125,13 +95,9 @@ class AuthRegisterTest extends TestCase
 
     public function test_cannot_create_new_user_when_password_has_less_than_5_chars()
     {
-        // Arrange
-        $formData = [
-            'name' => 'John',
-            'email' => 'john.doe@example.com',
-            'password' => '1234',
-            'password-repeat' => '1234',
-        ];
+        $formData = self::FORM_DATA;
+        $formData['password'] = '1234';
+        $formData['password-repeat'] = '1234';
 
         // Act
         $response = $this->post(route('auth.register'), $formData);
@@ -142,16 +108,8 @@ class AuthRegisterTest extends TestCase
 
     public function test_can_create_new_user_when_password_has_more_than_5_chars()
     {
-        // Arrange
-        $formData = [
-            'name' => 'John',
-            'email' => 'john.doe@example.com',
-            'password' => '12345',
-            'password-repeat' => '12345',
-        ];
-
         // Act
-        $response = $this->post(route('auth.register'), $formData);
+        $response = $this->post(route('auth.register'), self::FORM_DATA);
 
         // Assert
         $this->assertCount(1, User::all());
@@ -160,12 +118,8 @@ class AuthRegisterTest extends TestCase
     public function test_cannot_create_new_user_when_repeat_password_is_invalid()
     {
         // Arrange
-        $formData = [
-            'name' => 'John',
-            'email' => 'asdf',
-            'password' => '12345',
-            'password-repeat' => 'abcde',
-        ];
+        $formData = self::FORM_DATA;
+        $formData['password-repeat'] = 'abcde';
 
         // Act
         $response = $this->post(route('auth.register'), $formData);
