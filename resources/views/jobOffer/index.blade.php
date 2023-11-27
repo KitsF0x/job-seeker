@@ -11,14 +11,18 @@
                                 <a href="{{ route('jobOffer.show', $jobOffer) }}">{{ $jobOffer->name }}</a>
                             </h3>
                             <h5>
-                                <span class="badge bg-warning ms-3" role="alert">
-                                    Days to offer end {{ $jobOffer->daysToOfferEnd() }}
-                                </span>
+                                @if (isset($jobOffer->jobOfferDetails->start_date) && isset($jobOffer->jobOfferDetails->end_date))
+                                    <span class="badge bg-warning ms-3" role="alert">
+                                        Days to offer end {{ $jobOffer->daysToOfferEnd() }}
+                                    </span>
+                                @endif
                             </h5>
                         </div>
                     </div>
                     <h3>
-                        @if ($jobOffer->jobOfferDetails != null)
+                        @if (isset($jobOffer->jobOfferDetails->lowest_salary) &&
+                                isset($jobOffer->jobOfferDetails->highest_salary) &&
+                                isset($jobOffer->jobOfferDetails->salary_type))
                             <span class="badge bg-secondary">
                                 {{ $jobOffer->jobOfferDetails->lowest_salary }} -
                                 {{ $jobOffer->jobOfferDetails->highest_salary }}
@@ -29,6 +33,13 @@
                 </div>
 
                 <p>{{ $jobOffer->description }}</p>
+                @if (Auth::id() == $jobOffer->user_id)
+                    <a href="{{ route('jobOffer.edit', $jobOffer->id) }}">
+                        <button class="btn btn-warning">
+                            Edit
+                        </button>
+                    </a>
+                @endif
             </div>
         </div>
     @endforeach
