@@ -8,7 +8,6 @@
                     <span>
                         {{ $jobOffer->name }}
                     </span>
-
                 </h3>
                 {{-- If current user owns this offer --}}
                 @auth

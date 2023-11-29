@@ -7,6 +7,7 @@ use App\ModelFactories\JobOfferFactory;
 use App\ModelFactories\UserFactory;
 use App\Models\JobOffer;
 use App\Models\JobOfferDetails;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
@@ -100,5 +101,44 @@ class JobOfferDetailsManagementTest extends TestCase
         $response->assertSee(JobOfferDetailsFactory::DEFAULT_LOWEST_SALARY);
         $response->assertSee(JobOfferDetailsFactory::DEFAULT_HIGHEST_SALARY);
         $response->assertSee(JobOfferDetailsFactory::DEFAULT_SALARY_TYPE);
+    }
+
+    public function test_can_calculate_days_to_offer_end()
+    {
+        // Arrange
+        $date = Carbon::today()->addDays(4);
+        $jobOfferDetails = JobOfferDetailsFactory::createWithDefaultValues(0);
+        $jobOfferDetails->end_date = $date;
+
+        // Act
+        $calculatedDays = $jobOfferDetails->daysToOfferEnd();
+
+        // Assert
+        $this->assertEquals(4, $calculatedDays);
+    }
+
+    public function test_can_return_empty_string_when_start_date_is_null()
+    {
+        // Arrange
+        $jobOfferDetails = JobOfferDetailsFactory::createWithDefaultValues(0);
+        $jobOfferDetails->start_date = null;
+
+        // Act
+        $calculatedDays = $jobOfferDetails->daysToOfferEnd();
+
+        // Assert
+        $this->assertEquals('', $calculatedDays);
+    }
+    public function test_can_return_empty_string_when_end_date_is_null()
+    {
+        // Arrange
+        $jobOfferDetails = JobOfferDetailsFactory::createWithDefaultValues(0);
+        $jobOfferDetails->end_date = null;
+
+        // Act
+        $calculatedDays = $jobOfferDetails->daysToOfferEnd();
+
+        // Assert
+        $this->assertEquals('', $calculatedDays);
     }
 }

@@ -19,10 +19,8 @@ class JobOffer extends Model
     public function daysToOfferEnd() {
         if($this->jobOfferDetails == null) {
             return "";
-        }   
-        $start_date = Carbon::parse($this->jobOfferDetails->start_date);
-        $end_date = Carbon::parse($this->jobOfferDetails->end_date);
-        return $end_date->diffInDays($start_date);
+        }
+        return $this->jobOfferDetails->daysToOfferEnd();
     }
 
     // Relationships
