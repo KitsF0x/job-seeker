@@ -40,6 +40,13 @@
                         </button>
                     </a>
                 @endif
+                @if (Auth::check() && Auth::id() != $jobOffer->user_id)
+                    <a href="{{ route('application.create', $jobOffer) }}">
+                        <button class="btn btn-primary">
+                            Apply
+                        </button>
+                    </a>
+                @endif
             </div>
         </div>
     @endforeach

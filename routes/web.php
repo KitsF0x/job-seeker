@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -37,3 +38,11 @@ Route::delete('/auth/logout', [AuthController::class, 'logout'])->name('auth.log
 Route::get('/auth/myProfile', [AuthController::class, 'edit'])->name('auth.edit')->middleware('auth');
 
 Route::put('/personDetails/edit', [PersonDetailsController::class, 'update'])->name('personDetails.update');
+
+Route::middleware('auth')->group( function () {
+    Route::get('/application/{jobOffer}', [ApplicationController::class, 'create'])->name('application.create');
+    Route::post('/application/{jobOffer}', [ApplicationController::class, 'store'])->name('application.store');
+    Route::get('/application', [ApplicationController::class, 'index'])->name('application.index');
+    Route::delete('/application/{application}', [ApplicationController::class, 'destroy'])->name('application.destroy');
+}); 
+
